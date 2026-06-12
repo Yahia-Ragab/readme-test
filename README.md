@@ -152,9 +152,17 @@ LPIPS measures perceptual similarity using deep neural network features. It refl
 
 ![All Models Metrics](img/all_models_metrics.png)
 
-### Sample Output
+### Radar Individual
 
-![Output Example](img/output.png)
+![Radar Individual](img/output.png)
+
+---
+
+## Model Performance Summary (Radar Chart Insights)
+
+The radar charts evaluate each model across SSIM, PSNR, LPIPS, Temporal Consistency, and Frame Difference, where higher outer-area coverage generally indicates better performance. SSIM and PSNR measure structural and pixel-level fidelity, LPIPS (inverted) reflects perceptual quality (higher is better), while Temporal Consistency measures smoothness across frames and Frame Diff indicates inter-frame stability.
+
+Overall, fast models tend to preserve high image fidelity (SSIM/PSNR/LPIPS) but suffer from low temporal consistency, leading to flickering or instability. In contrast, heavier models such as SPAN-based enhancement improve temporal smoothness but may reduce pixel-level similarity due to generated details. RIFE stands out as the most balanced approach for both quality and temporal stability, while vertical reframing achieves perfect temporal consistency but is not comparable in pixel-based metrics due to structural transformation of the frame.
 
 ---
 
