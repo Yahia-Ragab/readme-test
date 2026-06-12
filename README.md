@@ -169,21 +169,13 @@ Overall, fast models tend to preserve high image fidelity (SSIM/PSNR/LPIPS) but 
 # Execution
 
 ## Run main application
+inside ./VISUALine/src/visualine/app/
 
 ```bash
-python main.py
+npm run dev
 ```
-
-## Launch GUI (if available)
-
-```bash
-python app.py
-```
-
----
 
 # Notes
 
 * Ensure all weights are correctly placed inside `./VISUALine/weights`
-* Exported results will be saved in `./VISUALine/export`
 * GPU is recommended for real-time performance
