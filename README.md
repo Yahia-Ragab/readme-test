@@ -31,7 +31,7 @@ git checkout develop
 ## 2. Create Conda environment
 
 ```bash
-conda create -n VISUALine python=3.10
+conda create -n VISUALine python=3.11
 conda activate VISUALine
 ```
 
