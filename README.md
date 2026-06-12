@@ -133,15 +133,9 @@ All outputs and evaluation visuals are located in the `img/` folder.
 # Execution
 
 ## Run main application
-
+inside ./VISUALine/src/visualine/app/
 ```bash
-python main.py
-```
-
-## Launch GUI (if available)
-
-```bash
-python app.py
+npm run dev
 ```
 
 ---
@@ -149,5 +143,4 @@ python app.py
 # Notes
 
 * Ensure all weights are correctly placed inside `./VISUALine/weights`
-* Exported results will be saved in `./VISUALine/export`
 * GPU is recommended for real-time performance
