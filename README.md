@@ -1,185 +1,144 @@
 # VISUALine
 
-VISUALine is a modular AI framework for automated video enhancement and visual editing. It combines multiple state-of-the-art computer vision models into flexible, node-based pipelines for tasks such as background blur, privacy redaction, smart reframing, slow motion generation, super-resolution, and old video restoration.
+VISUALine is a modular, node-based framework for automated video enhancement and visual editing. It integrates multiple computer vision models into reproducible pipelines for tasks such as prompt-based segmentation, background blur, privacy redaction, smart reframing, super-resolution, and video restoration.
 
-Designed for consumer GPUs, VISUALine features efficient model caching, mixed-precision inference, and a lightweight execution engine to deliver high-quality results with optimized memory usage.
-
-**Keywords:** Computer Vision, Video Processing, Local AI, Modular Pipelines, Video Enhancement, Prompt-Based Editing, Super Resolution
+The system is designed for efficient execution on consumer GPUs using optimized model loading, caching strategies, and mixed-precision inference. Its architecture enables flexible composition of processing stages while maintaining performance and scalability.
 
 ---
 
-# Workflows
+# Navigation
 
-## Cinematic Prompt Blur (Fast)
-
-Fast subject-aware background blur using open-vocabulary object detection.
-
-**Pipeline**
-
-```text
-PromptBoxDetectionNode
-        ↓
-SoftBoxMaskNode
-        ↓
-BokehBlurNode
-```
-
----
-
-## Cinematic Prompt Blur (HQ SAM2)
-
-High-quality background blur using prompt detection and SAM2 video tracking for more accurate masks.
-
-**Pipeline**
-
-```text
-PromptBoxDetectionNode
-        ↓
-SAM2TrackingNode
-        ↓
-BokehBlurNode
-```
-
----
-
-## Privacy Redaction
-
-Detects sensitive regions such as people or faces and applies a redaction effect.
-
-**Pipeline**
-
-```text
-PromptBoxDetectionNode
-        ↓
-BoxRedactionNode
-```
-
----
-
-## Old Video Enhancement (Fast)
-
-Lightweight enhancement with denoising, sharpening, contrast correction, saturation adjustment, and gamma correction.
-
-**Pipeline**
-
-```text
-VideoEnhanceNode
-```
-
----
-
-## Old Video Enhancement (SPAN x4)
-
-Advanced restoration using AI super-resolution.
-
-**Pipeline**
-
-```text
-VideoEnhanceNode
-        ↓
-SPANNode
-        ↓
-VideoEnhanceNode
-```
-
----
-
-## Smart Vertical Reframe
-
-Automatically crops and tracks a prompted subject for vertical video formats.
-
-**Pipeline**
-
-```text
-PromptBoxDetectionNode
-        ↓
-SmartReframeNode
-```
-
----
-
-## Slow Motion (RIFE x2)
-
-Generates smooth slow-motion videos using AI frame interpolation.
-
-**Pipeline**
-
-```text
-RIFENode
-```
+* [Overview](#visualine)
+* [Installation](#installation)
+* [Model Weights](#model-weights)
+* [Explanation](#explanation)
+* [Results & Comparison](#results--comparison)
 
 ---
 
 # Installation
 
-## Clone the repository
+## 1. Clone the repository
 
 ```bash
-git clone https://github.com/<username>/VISUALine.git
+git clone https://github.com/MO-87/VISUALine.git
 cd VISUALine
+git checkout develop
 ```
 
-## Create a virtual environment
+---
+
+## 2. Create Conda environment
 
 ```bash
-python -m venv .venv
+conda create -n VISUALine python=3.10
+conda activate VISUALine
 ```
 
-### Windows
+---
 
-```bash
-.venv\Scripts\activate
-```
-
-### Linux / macOS
-
-```bash
-source .venv/bin/activate
-```
-
-## Install dependencies
+## 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Download model weights
+---
 
-Download the required pretrained weights and place them inside the `weights/` directory.
+## 4. Create required folders
 
-| Model         | Purpose                         | Link     |
-| ------------- | ------------------------------- | -------- |
-| GroundingDINO | Prompt-based detection          | Add link |
-| SAM2          | Video segmentation and tracking | Add link |
-| RIFE          | Frame interpolation             | Add link |
-| SPAN x4       | Super resolution                | Add link |
+The project structure should include:
 
-## Automatic weight download
-
-The required models can also be downloaded automatically using the provided scripts.
-
-```bash
-python scripts/download_weights.py
+```text
+./VISUALine/weights
+./VISUALine/export
 ```
 
-Or download individual models:
+Create them using:
 
 ```bash
-python scripts/download_groundingdino.py
-python scripts/download_sam2.py
-python scripts/download_rife.py
-python scripts/download_span.py
+mkdir weights export
 ```
 
 ---
 
-# Quick Start
+# Model Weights
+
+Download the following pretrained weights and place them inside `./VISUALine/weights`.
+
+## Required Models
+
+1. SAM2
+   [sam2_hiera_small.pt](https://huggingface.co/facebook/sam2-hiera-small/blob/refs%2Fpr%2F1/sam2_hiera_small.pt?utm_source=chatgpt.com)
+
+2. GroundingDINO
+   [groundingdino_swinb_cogcoor.pth](https://huggingface.co/ShilongLiu/GroundingDINO/blob/main/groundingdino_swinb_cogcoor.pth?utm_source=chatgpt.com)
+
+3. FlowNet (Wan2.1)
+   [flownet.pkl](https://huggingface.co/DeepBeepMeep/Wan2.1/blob/main/flownet.pkl?utm_source=chatgpt.com)
+
+4. Additional models (Google Drive folder)
+   [Download additional weights](https://drive.google.com/drive/folders/1snn0Y8Fd8P7-OHtukGFenV7ST1QmXj-a?usp=drive_link&utm_source=chatgpt.com)
+
+---
+
+# Explanation
+
+VISUALine is built around a **node-based execution engine**, where each operation is encapsulated as an independent module. Each node receives input tensors, processes them, and outputs transformed data to the next stage.
+
+### Core Design Principles
+
+* Modularity: every function is implemented as a reusable node
+* Composability: workflows are constructed as linear or branched pipelines
+* Efficiency: GPU acceleration with mixed precision where possible
+* Memory control: model caching with controlled VRAM usage
+* Extensibility: new nodes can be added without modifying the core engine
+
+### Supported Processing Tasks
+
+* Prompt-based object detection and segmentation
+* Background blur and cinematic effects
+* Privacy redaction (faces and people masking)
+* Video enhancement and restoration
+* Super-resolution upscaling
+* Frame interpolation and slow motion generation
+* Smart cropping and vertical reframing
+
+---
+
+# Results & Comparison
+
+All outputs and evaluation visuals are located in the `img/` folder.
+
+## Model Comparison
+
+### Similar Models Comparison
+
+![Similar Models Comparison](img/similar_models_comparison.png)
+
+### Metrics Heatmap
+
+![Metrics Heatmap](img/metrics_heatmap.png)
+
+### Model Metrics Overview
+
+![All Models Metrics](img/all_models_metrics.png)
+
+### Sample Output
+
+![Output Example](img/output.png)
+
+---
+
+# Execution
+
+## Run main application
 
 ```bash
 python main.py
 ```
 
-Or launch the GUI:
+## Launch GUI (if available)
 
 ```bash
 python app.py
@@ -187,16 +146,8 @@ python app.py
 
 ---
 
-# Architecture
+# Notes
 
-VISUALine follows a node-based architecture where each processing stage is encapsulated as a reusable module. Nodes consume and produce tensor-based data, making workflows modular, scalable, and easy to extend.
-
-Features:
-
-* Modular processing pipelines
-* GPU acceleration
-* Mixed-precision inference
-* LRU model caching
-* Consumer GPU optimization
-* Image and video support
-* Programmatic and interactive interfaces
+* Ensure all weights are correctly placed inside `./VISUALine/weights`
+* Exported results will be saved in `./VISUALine/export`
+* GPU is recommended for real-time performance
