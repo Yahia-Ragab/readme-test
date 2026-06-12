@@ -116,6 +116,34 @@ All outputs and evaluation visuals are located in the `img/` folder.
 
 ![Similar Models Comparison](img/similar_models_comparison.png)
 
+This section compares different models that perform the same task but with different trade-offs. Some models are optimized for speed and low memory usage, while others prioritize accuracy and visual quality at the cost of higher computational demand.
+
+To evaluate performance, three common image quality metrics are used:
+
+**PSNR (Peak Signal-to-Noise Ratio)**
+PSNR measures the similarity between a generated output and a reference ground truth image. It is expressed in decibels (dB). Higher PSNR values generally indicate better reconstruction quality and closer similarity to the original image.
+
+* Higher PSNR = better quality
+* Lower PSNR = worse quality
+
+---
+
+**SSIM (Structural Similarity Index Measure)**
+SSIM evaluates perceived image quality by comparing structural information, luminance, and contrast between images. It is more aligned with human visual perception than PSNR.
+
+* Higher SSIM = better structural similarity and quality
+* Lower SSIM = worse quality
+
+---
+
+**LPIPS (Learned Perceptual Image Patch Similarity)**
+LPIPS measures perceptual similarity using deep neural network features. It reflects how humans perceive image differences rather than pixel-level accuracy.
+
+* Lower LPIPS = better perceptual quality
+* Higher LPIPS = worse quality
+
+---
+
 ### Metrics Heatmap
 
 ![Metrics Heatmap](img/metrics_heatmap.png)
@@ -133,9 +161,15 @@ All outputs and evaluation visuals are located in the `img/` folder.
 # Execution
 
 ## Run main application
-inside ./VISUALine/src/visualine/app/
+
 ```bash
-npm run dev
+python main.py
+```
+
+## Launch GUI (if available)
+
+```bash
+python app.py
 ```
 
 ---
@@ -143,4 +177,5 @@ npm run dev
 # Notes
 
 * Ensure all weights are correctly placed inside `./VISUALine/weights`
+* Exported results will be saved in `./VISUALine/export`
 * GPU is recommended for real-time performance
